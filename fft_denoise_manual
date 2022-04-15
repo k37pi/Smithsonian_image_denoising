@@ -1,0 +1,259 @@
+clear vars-global; close all;
+
+I=imread('Noisy_Smithsonian_Castle.jpg');
+I = double(I);
+I = I/max(max(I));
+%I = imresize(I,[256,256]);
+[M,N] = size(I);
+
+fI = fftshift(fft2(I));
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+
+%{
+[x1,y1] = getpts();
+[x2,y2] = getpts();
+[x3,y3] = getpts();
+[x4,y4] = getpts();
+[x,y] = getpts();
+x = round(x);
+y = round(y); 
+r = 5;
+for k = 1:length(x)
+    for i = 1:M
+        for j = 1:N
+           if (i-x(k))^2 + (j-y(k))^2 <= r^2
+               fI(i,j) = 0;
+           end
+        end
+    end
+end    
+
+filteredImage = ifft2(fftshift(fI));
+aI3 = abs(filteredImage);
+minValue = min(min(aI3));
+maxValue = max(max(aI3));
+imshow(aI3, [minValue maxValue]);
+%}
+
+%%{
+thr = 11.5;%(minValue+maxValue)/2;
+bs = aI> thr; % Binary image.
+bs = double(bs);
+figure(1);
+imagesc(bs);
+%bs(966:972, 1293:1301) = 0; % thr = 11.5
+%bs = logical(bs);
+%fI(bs) = 0;
+fI(969,1290) = 0; fI(969,1304) = 0; fI(974,1297) = 0; fI(964,1297) = 0;
+ 
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 11;
+bs = aI > thr; % Binary image.
+bs = double(bs);
+figure(1);
+imagesc(bs);
+bs(965:973, 1289:1305) = 0; % thr = 11
+bs = logical(bs);
+fI(bs) = 0;
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 10.5; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+bs(965:973, 1289:1305) = 0; % thr = 10.5
+%bs(:,1300:end) = 0; % thr = 10.5
+%bs(:,1:1290) = 0; % thr = 10.5
+bs = logical(bs);
+fI(bs) = 0;
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 10; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+r = find(bs(1:959,1297)>0); fI(r,1297) = 0;
+r = find(bs(979:end,1297)>0); fI(r,1297) = 0;
+
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 9.5; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+fI(943, 1197) = 0; fI(945, 1197) = 0; fI(993, 1197) = 0; fI(995, 1197) = 0;% thr = 9.5
+fI(943, 1397) = 0; fI(945, 1397) = 0; fI(993, 1397) = 0; fI(995, 1397) = 0; % thr = 9.5
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 9; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+fI(919, 1197) = 0; fI(944, 1197) = 0; fI(994, 1197) = 0; fI(1019, 1197) = 0;% thr = 9
+fI(919, 1397) = 0; fI(944, 1397) = 0; fI(994, 1397) = 0; fI(1019, 1397) = 0; % thr = 9
+fI(968,1238) = 0; fI(970,1356) = 0; % thr = 9
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 8.5; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+fI(966:972,1196:1197)=0; fI(966:972,1397:1398)=0; fI(966,1389)=0; fI(971,1382)=0; fI(971,1386)=0; fI(970,1384)=0; % thr = 8.5
+fI(972,1205)=0; fI(967,1208)=0; fI(967,1212)=0; fI(968,1210)=0; % thr = 8.5
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 8; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+fI(815:879, 1297) = 0; fI(1059:1123, 1297) = 0; fI(1069, 1397) = 0; fI(995,1200) = 0; fI(943, 1394) = 0;% thr = 9
+fI(869,1197) = 0;  % thr = 8
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 7.5; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+r = find(bs(1:940,1197)>0); fI(r,1197) = 0;
+r = find(bs(999:end,1197)>0); fI(r,1197) = 0;
+r = find(bs(1:940,1397)>0); fI(r,1397) = 0;
+r = find(bs(999:end,1397)>0); fI(r,1397) = 0; % thr = 7.5
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 6; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+r = find(bs(1:940,1197)>0); fI(r,1197) = 0;
+r = find(bs(999:end,1197)>0); fI(r,1197) = 0;
+r = find(bs(1:940,1397)>0); fI(r,1397) = 0;
+r = find(bs(999:end,1397)>0); fI(r,1397) = 0; % thr = 7.5
+
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+axis on;
+thr = 7; %(minValue+maxValue)/2;
+bs = aI > thr; % Binary image.
+figure(1);
+imagesc(bs);
+fI(894,1196) = 0; fI(1044,1195:1199) = 0; fI(894,1394:1398) = 0; 
+r = find(bs(1:896,1197)>0); fI(r,1197) = 0;
+r = find(bs(1040:end,1197)>0); fI(r,1197) = 0;
+r = find(bs(1:896,1397)>0); fI(r,1397) = 0;
+r = find(bs(1040:end,1397)>0); fI(r,1397) = 0; % thr = 7
+r = find(bs(1:770,1297)>0); fI(r,1297) = 0; % thr = 7
+r = find(bs(1168:end,1297)>0); fI(r,1297) = 0; % thr = 7
+
+aI2 = log(abs(fI));
+minValue = min(min(aI2));
+maxValue = max(max(aI2));
+imshow(aI2, [minValue maxValue]);
+
+filteredImage = ifft2(fftshift(fI));
+aI3 = abs(filteredImage);
+minValue = min(min(aI3));
+maxValue = max(max(aI3));
+imshow(aI3, [minValue maxValue]);
+%}
+
+%{
+fI = fftshift(fft2(aI3));
+aI = log(abs(fI));
+minValue = min(min(aI));
+maxValue = max(max(aI));
+imshow(aI, []);
+
+thr = 11;%(minValue+maxValue)/2;
+bs1 = aI > thr; % Binary image.
+bs1 = double(bs1);
+figure(1);
+imagesc(bs1);
+
+%bs1(965:972, 1289:1305) = 0; % thr = 10
+bs1(1:973, 1289:1305) = 0; % thr = 11
+%bs1(966:972, 1293:1301) = 0; % thr = 11.5
+
+bs1 = logical(bs1);
+
+fI(bs1) = 0;
+aI2 = log(abs(fI));
+minValue = min(min(aI2));
+maxValue = max(max(aI2));
+imshow(aI2, [minValue maxValue]);
+
+filteredImage1 = ifft2(fftshift(fI));
+aI4 = abs(filteredImage1);
+minValue = min(min(aI4));
+maxValue = max(max(aI4));
+imshow(aI4, [minValue maxValue]);
+%}
+
+% Butterworth
+[M, N] = size(aI3);
+fI1 = fft2(aI3);
+aI4 = log(abs(fI1));
+minValue = min(min(aI4));
+maxValue = max(max(aI4));
+
+n = 2;  % order 
+thr = 50;   
+
+u = 0:(M-1);
+v = 0:(N-1);
+idx = find(u > M/2);
+u(idx) = u(idx) - M;
+idy = find(v > N/2);
+v(idy) = v(idy) - N;
+  
+[V, U] = meshgrid(v, u);
+  
+D = sqrt(U.^2 + V.^2);
+  
+H = 1./(1 + (D./thr).^(2*n));
+  
+G = H.*fI1;
+
+final = real(ifft2(double(G))); 
+%imshow(final);
